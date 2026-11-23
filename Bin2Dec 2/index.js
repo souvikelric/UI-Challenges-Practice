@@ -72,8 +72,26 @@ input.addEventListener("input", (e) => {
   if (index < digits.length - 1) {
     digits[index + 1].focus();
   }
+  let inputValue = digits.reduce((str, d) => {
+    if (d.value === "") return str + "0";
+    else return str + d.value;
+  }, "");
+  resultDiv.textContent = convertBinaryToDecimal(inputValue);
 });
 
+// event listener to make backspace work
+input.addEventListener("keydown", (e) => {
+  if (!e.target.classList.contains("digit")) return;
+  if (e.key === "Backspace") {
+    const index = digits.indexOf(e.target);
+    if (index > 0) {
+      digits[index].value = "";
+      digits[index - 1].focus();
+    } else {
+      digits[index].value = "";
+    }
+  }
+});
 const button = document.querySelector("#clickButton");
 
 button.addEventListener("click", () => {
@@ -83,35 +101,3 @@ button.addEventListener("click", () => {
   }, "");
   resultDiv.textContent = convertBinaryToDecimal(inputValue);
 });
-
-// button.addEventListener("click", () => {
-//   let inputValue = input.value;
-
-//   if (binaryToDecimal) {
-//     // check if it contains only 0's and 1's
-//     for (let i = 0; i < inputValue.length; i++) {
-//       if (inputValue[i] !== "0" && inputValue[i] !== "1") {
-//         showError(binaryError, binaryHelpertext);
-//         return;
-//       }
-//     }
-//     isError = false;
-//     errorDiv.textContent = "";
-//     resultDiv.classList.add("filled");
-
-//     resultDiv.textContent = convertBinaryToDecimal(inputValue);
-//   } else {
-//     // check if it only contains numbers
-//     //regex for only numbers
-//     const regex = /^[0-9]+$/;
-//     if (!regex.test(inputValue)) {
-//       showError(decimalError, "Please input only Integers");
-//       return;
-//     }
-
-//     isError = false;
-//     errorDiv.textContent = "";
-//     resultDiv.classList.add("filled");
-//     resultDiv.textContent = convertDecimalToBinary(inputValue);
-//   }
-// });
